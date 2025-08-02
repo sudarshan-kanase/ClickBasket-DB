@@ -1,0 +1,14 @@
+CREATE TABLE products (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  description TEXT,
+  price DECIMAL(10, 2) NOT NULL,
+  image TEXT
+);
+
+INSERT INTO products (name, description, price, image) VALUES
+('Smartphone X', 'A powerful smartphone with OLED display', 34999.00, 'https://via.placeholder.com/300x200?text=Smartphone'),
+('Wireless Headphones', 'Noise-cancelling over-ear headphones', 7999.00, 'https://via.placeholder.com/300x200?text=Headphones');
+
+/////////////--------------////////////////////////
+//
