@@ -2,6 +2,8 @@ const express = require("express");
 const con = require("./database_conection"); // PgSQL connection
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const app = express();
@@ -26,6 +28,56 @@ app.get("/api/products", (req, res) => {
     res.json(result.rows);
   });
 });
+////////////////////////////////////register/////////////////////////////////////////////////////
+app.get("/users", async (req, res) => {
+  try {
+    const result = await con.query("SELECT * FROM users");
+    res.json({ users: result.rows });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ status: 500, error: err.message });
+  }
+});
+/////////////////////////////////////post/////////////////////////////////////////////////////
+app.post("/api/register", async (req, res) => {
+  const { name, email, mobile, password } = req.body;
+
+  try {
+    const checkUser = await con.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+    if (checkUser.rows.length > 0) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
+    await con.query(
+      "INSERT INTO users (name, email, mobile, password) VALUES ($1, $2, $3, $4)",
+      [name, email, mobile, password]
+    );
+    res.json({ message: "Registered successfully" });
+  } catch (err) {
+    console.error("Register error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+/////////////////////////////////login/////////////////////////////////////////////////////
+app.post("/api/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const result = await con.query(
+      "SELECT * FROM users WHERE email=$1 AND password=$2",
+      [email, password]
+    );
+    if (result.rows.length > 0) {
+      res.json({ message: "Login successful", user: result.rows[0] });
+    } else {
+      res.status(401).json({ message: "Invalid credentials" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: "Error logging in" });
+  }
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
