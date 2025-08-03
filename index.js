@@ -77,6 +77,45 @@ app.post("/api/login", async (req, res) => {
     res.status(500).json({ message: "Error logging in" });
   }
 });
+// Contact form API
+const nodemailer = require("nodemailer");
+app.post("/api/contact", async (req, res) => {
+  const { name, email, message } = req.body;
+
+  if (!name || !email || !message) {
+    return res.status(400).json({ error: "All fields are required." });
+  }
+
+  try {
+    // Configure your SMTP transporter
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS, // use App Password if 2FA enabled
+      },
+    });
+
+    const mailOptions = {
+      from: email,
+      to: "kanasesudarshan@gmail.com",
+      subject: `New Contact Form - ${name}`,
+      text: `
+From: ${name}
+Email: ${email}
+
+Message:
+${message}
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ success: true, message: "Email sent!" });
+  } catch (err) {
+    console.error("Error sending email:", err);
+    res.status(500).json({ success: false, error: "Email sending failed." });
+  }
+});
 
 
 const PORT = process.env.PORT || 3000;
