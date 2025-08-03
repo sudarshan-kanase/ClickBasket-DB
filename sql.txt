@@ -11,4 +11,14 @@ INSERT INTO products (name, description, price, image) VALUES
 ('Wireless Headphones', 'Noise-cancelling over-ear headphones', 7999.00, 'https://via.placeholder.com/300x200?text=Headphones');
 
 /////////////--------------////////////////////////
-//
+CREATE TABLE users (
+  uid SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  mobile TEXT NOT NULL,
+  password TEXT NOT NULL
+);
+INSERT INTO users (name, email, mobile, password)
+VALUES 
+  ('sudarshan', 'kanasesudarshan@gmail.co', '7666320367', 'Kana@7666'),
+  ('MyFanpage', 'sudarshankanase@gmail.co', '7666320367', 'KAna@1234');
