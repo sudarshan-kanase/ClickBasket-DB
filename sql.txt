@@ -22,3 +22,14 @@ INSERT INTO users (name, email, mobile, password)
 VALUES 
   ('sudarshan', 'kanasesudarshan@gmail.co', '7666320367', 'Kana@7666'),
   ('MyFanpage', 'sudarshankanase@gmail.co', '7666320367', 'KAna@1234');
+///////////////////////////////////
+
+CREATE TABLE IF NOT EXISTS orders (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  mobile VARCHAR(15) NOT NULL,
+  address TEXT NOT NULL,
+  total NUMERIC NOT NULL,
+  items JSON NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

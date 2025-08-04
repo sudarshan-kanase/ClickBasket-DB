@@ -116,6 +116,26 @@ ${message}
     res.status(500).json({ success: false, error: "Email sending failed." });
   }
 });
+app.post("/api/orders", async (req, res) => {
+  const { name, mobile, address, total, items } = req.body;
+
+  if (!name || !mobile || !address || !total || !items) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+  try {
+    const result = await con.query(
+      "INSERT INTO orders (name, mobile, address, total, items) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [name, mobile, address, total, JSON.stringify(items)]
+    );
+
+    res.status(201).json({ message: "Order placed successfully", order: result.rows[0] });
+  } catch (error) {
+    console.error("Order placement error:", error);
+    res.status(500).json({ message: "Failed to place order" });
+  }
+});
+
 
 
 const PORT = process.env.PORT || 3000;
