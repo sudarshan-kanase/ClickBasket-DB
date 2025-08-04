@@ -77,7 +77,7 @@ app.post("/api/login", async (req, res) => {
     res.status(500).json({ message: "Error logging in" });
   }
 });
-// Contact form API
+/////////////////---------------Contact form API---------------------///////////////////////////////////////
 const nodemailer = require("nodemailer");
 app.post("/api/contact", async (req, res) => {
   const { name, email, message } = req.body;
