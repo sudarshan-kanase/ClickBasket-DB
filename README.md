@@ -4,7 +4,7 @@ This is the **Node.js + Express** backend for the User Panel system. It handles 
 
 ## ⚙️ Features
 
-- Admin Registration & Login
+- User Registration & Login
 - JWT token generation for secure access
 - Password hashing using bcrypt
 - User data stored in PostgreSQL or MongoDB (configurable)
